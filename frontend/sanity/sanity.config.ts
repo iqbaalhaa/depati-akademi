@@ -10,6 +10,8 @@ export default defineConfig({
   projectId: 'xtleexm5',
   dataset: 'production',
 
+  basePath: '/admin',
+
   plugins: [structureTool(), visionTool()],
 
   schema: {
