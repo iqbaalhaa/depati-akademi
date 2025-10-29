@@ -1,0 +1,11 @@
+.current .headline-curve {
+  display: block !important;
+}
+
+.react-scroll-link:hover {
+  color: #1976d2 !important;
+}
+
+.react-scroll-link:hover .headline-curve {
+  display: block !important;
+}
