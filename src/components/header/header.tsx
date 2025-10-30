@@ -31,7 +31,7 @@ const Header: FC = () => {
               justifyContent: 'space-between',
               flexDirection: { xs: 'column', md: 'row' },
 
-              transition: (theme) => theme.transitions.create(['top']),
+              transition: (theme: any) => theme.transitions.create(['top']),
               ...(matchMobileView && {
                 py: 6,
                 backgroundColor: 'background.paper',

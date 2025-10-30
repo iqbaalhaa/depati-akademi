@@ -24,7 +24,7 @@ const CourseCardItem: FC<Props> = ({ item }) => {
           p: 2,
           backgroundColor: 'background.paper',
           borderRadius: 4,
-          transition: (theme) => theme.transitions.create(['box-shadow']),
+          transition: (theme: any) => theme.transitions.create(['box-shadow']),
           '&:hover': {
             boxShadow: 2,
             [`& .${iconButtonClasses.root}`]: {
