@@ -6,10 +6,12 @@ import { EmotionCache } from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { createEmotionCache } from '@/utils'
 import { MUIProvider } from '@/providers'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import 'slick-carousel/slick/slick.css'
 import '@/styles/globals.css'
 import '@/styles/react-slick.css'
 import '@/styles/navigation.css'
+import '@/styles/dark-mode.css'
 import { NextPageWithLayout } from '@/interfaces/layout'
 // import 'slick-carousel/slick/slick-theme.css'
 
@@ -33,11 +35,13 @@ const App: FC<AppPropsWithLayout> = (props: AppPropsWithLayout) => {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <title>Depati Akademi</title>
       </Head>
-      <MUIProvider>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        {getLayout(<Component {...pageProps} />)}
-      </MUIProvider>
+      <ThemeProvider>
+        <MUIProvider>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          {getLayout(<Component {...pageProps} />)}
+        </MUIProvider>
+      </ThemeProvider>
     </CacheProvider>
   )
 }

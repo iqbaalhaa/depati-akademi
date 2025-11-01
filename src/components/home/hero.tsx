@@ -202,7 +202,7 @@ const HomeHero: FC = () => {
               </Box>
             </Box>
             <Box sx={{ lineHeight: 0 }}>
-              <Image src="/images/home-hero.jpg" width={475} height={487} alt="Hero img" />
+              <Image src="/images/home-hero1.jpg" width={475} height={487} alt="Hero img" />
             </Box>
           </Grid>
         </Grid>

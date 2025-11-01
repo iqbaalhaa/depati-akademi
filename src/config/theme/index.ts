@@ -37,5 +37,5 @@ const createTheme = (darkMode?: boolean): Theme => {
 
 const theme = createTheme(false)
 
-export { paletteBase, paletteLight, paletteDark, typography, shadows }
+export { paletteBase, paletteLight, paletteDark, typography, shadows, createTheme }
 export default theme

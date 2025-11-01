@@ -1,0 +1,19 @@
+/* Dark mode styles */
+body.dark-mode {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+
+/* Tambahan style untuk elemen yang mungkin tidak terpengaruh tema MUI */
+body.dark-mode a {
+  color: #90caf9;
+}
+
+body.dark-mode a:hover {
+  color: #42a5f5;
+}
+
+/* Transisi halus saat beralih tema */
+body, body * {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
