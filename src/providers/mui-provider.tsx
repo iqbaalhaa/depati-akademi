@@ -1,5 +1,5 @@
-import React, { FC, ReactNode, useEffect, useMemo, useState } from 'react'
-import { ThemeProvider } from '@mui/material'
+import React, { ReactNode, useEffect, useMemo, useState } from 'react'
+import { ThemeProvider } from '@mui/material/styles'
 import { createTheme } from '@/config/theme'
 import { useTheme as useCustomTheme } from '@/contexts/ThemeContext'
 import { client } from '@/sanity/lib/client'
@@ -9,7 +9,7 @@ interface Props {
   children: ReactNode
 }
 
-const MUIProvider: FC<Props> = ({ children }) => {
+const MUIProvider = ({ children }: Props) => {
   const { darkMode } = useCustomTheme();
   const [overrides, setOverrides] = useState<{ primaryMain?: string; secondaryMain?: string; accentMain?: string }>()
   

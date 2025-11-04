@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import NextLink from 'next/link'
 import Grid from '@mui/material/Grid'
 import MuiLink from '@mui/material/Link'
@@ -44,7 +44,7 @@ interface NavigationItemProps {
   path: string
 }
 
-const NavigationItem: FC<NavigationItemProps> = ({ label, path }) => {
+const NavigationItem = ({ label, path }: NavigationItemProps) => {
   return (
     <MuiLink
       component={NextLink}
@@ -61,7 +61,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ label, path }) => {
   )
 }
 
-const FooterNavigation: FC = () => {
+const FooterNavigation = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={4}>

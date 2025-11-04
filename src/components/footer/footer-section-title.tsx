@@ -1,12 +1,10 @@
-import React, { FC } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
-interface Props {
-  title: string
-}
+type FooterSectionTitleProps = { title: string }
 
-const FooterSectionTitle: FC<Props> = ({ title }: Props) => {
+const FooterSectionTitle = ({ title }: FooterSectionTitleProps) => {
   return (
     <Box
       sx={{
