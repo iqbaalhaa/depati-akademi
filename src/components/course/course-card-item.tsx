@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import Image from 'next/image'
+// Using native img via MUI Box to avoid Next/Image TS type conflict during build
 import Box from '@mui/material/Box'
 import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
@@ -43,7 +43,15 @@ const CourseCardItem: FC<Props> = ({ item }) => {
             mb: 2,
           }}
         >
-          <Image src={item.cover} width={360} height={240} alt={'Course ' + item.id} />
+          <Box
+            component="img"
+            src={item.cover}
+            alt={'Course ' + item.id}
+            width={360}
+            height={240}
+            loading="lazy"
+            style={{ display: 'block', width: '100%', height: 'auto' }}
+          />
         </Box>
         <Box sx={{ mb: 2 }}>
           <Typography component="h2" variant="h5" sx={{ mb: 2, height: 56, overflow: 'hidden', fontSize: '1.2rem' }}>

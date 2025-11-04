@@ -8,6 +8,7 @@ import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import EmailIcon from '@mui/icons-material/Email'
 import { alpha } from '@mui/material/styles'
+import type { Theme } from '@mui/material/styles'
 
 import { Mentor } from '@/interfaces/mentor'
 
@@ -52,12 +53,12 @@ const MentorCardItem: FC<Props> = ({ item }) => {
               boxShadow: 4,
               display: 'flex',
               flexDirection: 'column',
-              background: (theme) =>
+              background: (theme: Theme) =>
                 `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.10)} 0%, ${alpha(
                   theme.palette.secondary.main,
                   0.10
                 )} 100%)`,
-              border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.16)}`,
+              border: (theme: Theme) => `1px solid ${alpha(theme.palette.primary.main, 0.16)}`,
             }}
           >
             <Box
@@ -99,12 +100,12 @@ const MentorCardItem: FC<Props> = ({ item }) => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              background: (theme) =>
+              background: (theme: Theme) =>
                 `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.18)} 0%, ${alpha(
                   theme.palette.secondary.main,
                   0.18
                 )} 100%)`,
-              border: (theme) => `1px solid ${alpha(theme.palette.secondary.main, 0.20)}`,
+              border: (theme: Theme) => `1px solid ${alpha(theme.palette.secondary.main, 0.20)}`,
             }}
           >
             <Typography variant="h6" sx={{ mb: 1, fontWeight: 700 }}>
