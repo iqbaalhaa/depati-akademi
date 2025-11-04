@@ -7,8 +7,20 @@ import paletteDark from './palette-dark'
 import shadows from './shadows'
 
 // default
-const createTheme = (darkMode?: boolean): Theme => {
+const createTheme = (darkMode?: boolean, overrides?: { primaryMain?: string; secondaryMain?: string; accentMain?: string }): Theme => {
   const palette = darkMode ? { ...paletteBase, ...paletteDark } : { ...paletteBase, ...paletteLight }
+
+  // Apply palette overrides from Site Settings if provided
+  if (overrides?.primaryMain) {
+    palette.primary = { ...(palette.primary || {}), main: overrides.primaryMain }
+  }
+  if (overrides?.secondaryMain) {
+    palette.secondary = { ...(palette.secondary || {}), main: overrides.secondaryMain }
+  }
+  if (overrides?.accentMain) {
+    palette.info = { ...(palette.info || {}), main: overrides.accentMain }
+  }
+
   return createMuiTheme({
     palette,
     typography,

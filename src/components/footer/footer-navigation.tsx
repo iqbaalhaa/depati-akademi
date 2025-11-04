@@ -3,35 +3,40 @@ import NextLink from 'next/link'
 import Grid from '@mui/material/Grid'
 import MuiLink from '@mui/material/Link'
 import type { Navigation } from '@/interfaces/navigation'
-import { navigations as headerNavigations } from '@/components/navigation/navigation.data'
 import { FooterSectionTitle } from '@/components/footer'
 
 const courseMenu: Array<Navigation> = [
   {
     label: 'UI/UX Design',
-    path: '#',
+    path: '/programs',
   },
   {
     label: 'Mobile Development',
-    path: '#',
+    path: '/programs',
   },
   {
     label: 'Machine Learning',
-    path: '#',
+    path: '/programs',
   },
   {
     label: 'Web Development',
-    path: '#',
+    path: '/programs',
   },
 ]
 
-const pageMenu = headerNavigations
+const pageMenu: Array<Navigation> = [
+  { label: 'Home', path: '/' },
+  { label: 'Program', path: '/programs' },
+  { label: 'Testimonial', path: '/#testimonial' },
+  { label: 'Gallery', path: '/#gallery' },
+  { label: 'Team', path: '/#mentors' },
+]
 
 const companyMenu: Array<Navigation> = [
-  { label: 'Contact Us', path: '#' },
-  { label: 'Privacy & Policy', path: '#' },
-  { label: 'Term & Condition', path: '#' },
-  { label: 'FAQ', path: '#' },
+  { label: 'Contact Us', path: '/' },
+  { label: 'Privacy & Policy', path: '/' },
+  { label: 'Term & Condition', path: '/' },
+  { label: 'FAQ', path: '/' },
 ]
 
 interface NavigationItemProps {
@@ -62,7 +67,7 @@ const FooterNavigation: FC = () => {
       <Grid item xs={12} md={4}>
         <FooterSectionTitle title="Course" />
         {courseMenu.map(({ label, path }, index) => (
-          <NavigationItem key={index + path} label={label} path={/* path */ '#'} />
+          <NavigationItem key={index + path} label={label} path={path} />
         ))}
       </Grid>
       <Grid item xs={12} md={4}>

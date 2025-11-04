@@ -10,5 +10,17 @@ export default defineType({
     defineField({ name: 'photo', title: 'Photo', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'bio', title: 'Bio', type: 'text' }),
     defineField({ name: 'socialLinks', title: 'Social Links', type: 'array', of: [{ type: 'url' }] }),
+    defineField({
+      name: 'social',
+      title: 'Social Media',
+      type: 'object',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'instagram', title: 'Instagram', type: 'string' }),
+        defineField({ name: 'github', title: 'GitHub', type: 'string' }),
+        defineField({ name: 'gmail', title: 'Gmail/Email', type: 'string' }),
+        defineField({ name: 'linkedin', title: 'LinkedIn', type: 'string' }),
+      ],
+    }),
   ],
 })

@@ -11,5 +11,7 @@ export default defineType({
     defineField({ name: 'duration', title: 'Duration', type: 'string' }),
     defineField({ name: 'price', title: 'Price', type: 'number' }),
     defineField({ name: 'image', title: 'Image', type: 'image', options: { hotspot: true } }),
+    defineField({ name: 'rating', title: 'Rating', type: 'number', description: '0-5', validation: (Rule) => Rule.min(0).max(5) }),
+    defineField({ name: 'ratingCount', title: 'Rating Count', type: 'number', description: 'Jumlah ulasan', validation: (Rule) => Rule.min(0) }),
   ],
 })

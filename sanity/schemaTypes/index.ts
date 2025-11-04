@@ -1,3 +1,4 @@
+import home from './home'
 import siteSettings from './siteSettings'
 import program from './program'
 import schedule from './schedule'
@@ -10,6 +11,7 @@ import application from './application'
 import role from './role'
 
 export const schemaTypes = [
+  home,
   siteSettings,
   program,
   schedule,

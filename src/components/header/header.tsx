@@ -4,7 +4,7 @@ import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { Logo } from '@/components/logo'
-import { Navigation, AuthNavigation } from '@/components/navigation'
+import { Navigation } from '@/components/navigation'
 import { useTheme } from '@mui/material/styles'
 import { Menu, Close } from '@mui/icons-material'
 import ThemeToggle from '@/components/theme-toggle'
@@ -47,8 +47,8 @@ const Header: FC = () => {
             <Box /> {/* Magic space */}
             <Navigation />
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ThemeToggle />
-              <AuthNavigation />
+              {/* ThemeToggle is fine here; no rewrite needed unless you want to add props or styling */}
+              {React.createElement(ThemeToggle)}
             </Box>
             {visibleMenu && matchMobileView && (
               <IconButton

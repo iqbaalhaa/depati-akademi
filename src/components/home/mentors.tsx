@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import Slider, { Settings } from 'react-slick'
 import Container from '@mui/material/Container'
@@ -9,7 +9,10 @@ import { useTheme, styled } from '@mui/material/styles'
 import IconArrowBack from '@mui/icons-material/ArrowBack'
 import IconArrowForward from '@mui/icons-material/ArrowForward'
 import { MentorCardItem } from '@/components/mentor'
-import { data } from './mentors.data'
+import imageUrlBuilder from '@sanity/image-url'
+import { client } from '@/sanity/lib/client'
+import type { Mentor } from '@/interfaces/mentor'
+import type { SanityTeamMember, SanityHomePage } from '@/interfaces/sanity'
 
 interface SliderArrowArrow {
   onClick?: () => void
@@ -60,12 +63,61 @@ const StyledDots = styled('ul')(({ theme }) => ({
 const HomeOurMentors: FC = () => {
   const { breakpoints } = useTheme()
   const matchMobileView = useMediaQuery(breakpoints.down('md'))
+  const [mentors, setMentors] = useState<Mentor[]>([])
+  const [loading, setLoading] = useState(true)
+  const [sectionTitle, setSectionTitle] = useState<string>('Our Expert Mentors')
+  const fetchedRef = useRef(false)
+  const builder = useMemo(() => imageUrlBuilder(client), [])
+
+  useEffect(() => {
+    if (fetchedRef.current) return
+    fetchedRef.current = true
+    // Fetch mentors list
+    client
+      .fetch<SanityTeamMember[]>(
+        `*[_type == "team"] | order(_createdAt desc)[0...9]{
+          _id,
+          name,
+          position,
+          photo,
+          bio,
+          social{ instagram, github, gmail, linkedin }
+        }`
+      )
+      .then((items) => {
+        const mapped: Mentor[] = items.map((t) => ({
+          id: t._id,
+          name: t.name,
+          photo: t.photo
+            ? builder.image(t.photo).width(360).height(480).url()
+            : '/images/mentors/philip-martin-5aGUyCW_PJw-unsplash.jpg',
+          category: t.position || 'Mentor',
+          description: t.bio || '',
+          social: t.social
+          // company info not in schema; leaving undefined
+        }))
+        setMentors(mapped)
+      })
+      .catch((err) => {
+        console.error('Sanity fetch error (team):', err)
+        setMentors([])
+      })
+      .finally(() => setLoading(false))
+    
+    // Fetch section title from Home document
+    client
+      .fetch<SanityHomePage | null>(`*[_type == "home"][0]{ mentorsTitle }`)
+      .then((home) => {
+        if (home?.mentorsTitle) setSectionTitle(home.mentorsTitle)
+      })
+      .catch(() => {})
+  }, [builder])
 
   const sliderConfig: Settings = {
-    infinite: true,
-    // autoplay: true,
+    infinite: mentors.length > (matchMobileView ? 1 : 4),
+    autoplay: true,
     speed: 300,
-    slidesToShow: matchMobileView ? 1 : 3,
+    slidesToShow: Math.min(matchMobileView ? 1 : 4, Math.max(mentors.length, 1)),
     slidesToScroll: 1,
     prevArrow: <SliderArrow type="prev" />,
     nextArrow: <SliderArrow type="next" />,
@@ -93,14 +145,16 @@ const HomeOurMentors: FC = () => {
     >
       <Container maxWidth="lg">
         <Typography variant="h1" sx={{ fontSize: 40 }}>
-          Our Expert Mentors
+          {sectionTitle}
         </Typography>
 
-        <Slider {...sliderConfig}>
-          {data.map((item) => (
-            <MentorCardItem key={String(item.id)} item={item} />
-          ))}
-        </Slider>
+        {!loading && (
+          <Slider {...sliderConfig}>
+            {mentors.map((item) => (
+              <MentorCardItem key={String(item.id)} item={item} />
+            ))}
+          </Slider>
+        )}
       </Container>
     </Box>
   )

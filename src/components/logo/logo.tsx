@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import Image from 'next/image'
 import { Box, Typography } from '@mui/material'
 
 interface Props {
@@ -6,9 +7,12 @@ interface Props {
   variant?: 'primary' | 'secondary'
 }
 
-const Logo: FC<Props> = ({ onClick, variant }) => {
+const Logo: FC<Props> = ({ onClick, variant = 'primary' }) => {
   return (
-    <Box onClick={onClick}>
+    <Box onClick={onClick} sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      <Box sx={{ lineHeight: 0, mr: 1 }}>
+        <Image src="/images/logodab.svg" alt="Depati Akademi logo" width={36} height={36} />
+      </Box>
       <Typography
         variant="h4"
         component="h1"
@@ -18,10 +22,6 @@ const Logo: FC<Props> = ({ onClick, variant }) => {
       </Typography>
     </Box>
   )
-}
-
-Logo.defaultProps = {
-  variant: 'primary',
 }
 
 export default Logo

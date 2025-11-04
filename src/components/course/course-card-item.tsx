@@ -59,9 +59,10 @@ const CourseCardItem: FC<Props> = ({ item }) => {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="h5" color="primary.main">
-              {'$' + item.price}
+              {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(
+                Number(item.price) || 0
+              )}
             </Typography>
-            <Typography variant="h6">/ course</Typography>
           </Box>
           <IconButton
             color="primary"

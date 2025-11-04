@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Slider, { Settings } from 'react-slick'
@@ -9,8 +9,13 @@ import { IconButton, useMediaQuery } from '@mui/material'
 import IconArrowBack from '@mui/icons-material/ArrowBack'
 import IconArrowForward from '@mui/icons-material/ArrowForward'
 
-import { data } from './popular-course.data'
+import Button from '@mui/material/Button'
+import Link from 'next/link'
+import imageUrlBuilder from '@sanity/image-url'
+import { client } from '@/sanity/lib/client'
 import { CourseCardItem } from '@/components/course'
+import type { Course } from '@/interfaces/course'
+import type { SanityProgram } from '@/interfaces/sanity'
 
 interface SliderArrowArrow {
   onClick?: () => void
@@ -61,12 +66,54 @@ const StyledDots = styled('ul')(({ theme }) => ({
 const HomePopularCourse: FC = () => {
   const { breakpoints } = useTheme()
   const matchMobileView = useMediaQuery(breakpoints.down('md'))
+  const [courses, setCourses] = useState<Course[]>([])
+  const [loading, setLoading] = useState(true)
+  const fetchedRef = useRef(false)
 
+  const builder = useMemo(() => imageUrlBuilder(client), [])
+
+  useEffect(() => {
+    if (fetchedRef.current) return
+    fetchedRef.current = true
+    client
+      .fetch<SanityProgram[]>(
+        `*[_type == "program"] | order(_createdAt desc)[0...9]{
+          _id,
+          title,
+          price,
+          duration,
+          image,
+          rating,
+          ratingCount
+        }`
+      )
+      .then((items) => {
+        const mapped: Course[] = items.map((p) => ({
+          id: p._id,
+          title: p.title,
+          cover: p.image
+            ? builder.image(p.image).width(360).height(240).url()
+            : '/images/courses/christopher-gower-m_HRfLhgABo-unsplash.jpg',
+          rating: typeof p.rating === 'number' ? p.rating : 5,
+          ratingCount: typeof p.ratingCount === 'number' ? p.ratingCount : 0,
+          price: typeof p.price === 'number' ? p.price : 0,
+          category: p.duration || 'Program',
+        }))
+        setCourses(mapped)
+      })
+      .catch((err) => {
+        console.error('Sanity fetch error (programs):', err)
+        setCourses([])
+      })
+      .finally(() => setLoading(false))
+  }, [builder])
+
+  const slidesToShow = Math.min(matchMobileView ? 1 : 3, Math.max(courses.length, 1))
   const sliderConfig: Settings = {
-    infinite: true,
+    infinite: courses.length > slidesToShow,
     autoplay: true,
     speed: 300,
-    slidesToShow: matchMobileView ? 1 : 3,
+    slidesToShow,
     slidesToScroll: 1,
     prevArrow: <SliderArrow type="prev" />,
     nextArrow: <SliderArrow type="next" />,
@@ -97,22 +144,36 @@ const HomePopularCourse: FC = () => {
                 height: '100%',
                 width: { xs: '100%', md: '90%' },
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: { xs: 'center', md: 'flex-start' },
+                alignItems: { xs: 'center', md: 'flex-start' },
+                justifyContent: 'center',
+                flexDirection: 'column',
               }}
             >
-              <Typography variant="h1" sx={{ mt: { xs: 0, md: -5 }, fontSize: { xs: 30, md: 48 } }}>
+              <Typography variant="h1" sx={{ mt: { xs: 0, md: -5 }, fontSize: { xs: 20, md: 43 } }}>
                 Kursus Paling Populer
               </Typography>
+              <Box sx={{ mt: 2 }}>
+                <Link href="/programs" passHref>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ boxShadow: 1, '&:hover': { boxShadow: 2 } }}
+                  >
+                    Lihat Semua Kursus
+                  </Button>
+                </Link>
+              </Box>
             </Box>
           </Grid>
 
           <Grid item xs={12} md={9}>
-            <Slider {...sliderConfig}>
-              {data.map((item) => (
-                <CourseCardItem key={String(item.id)} item={item} />
-              ))}
-            </Slider>
+            {!loading && (
+              <Slider {...sliderConfig}>
+                {courses.map((item) => (
+                  <CourseCardItem key={String(item.id)} item={item} />
+                ))}
+              </Slider>
+            )}
           </Grid>
         </Grid>
       </Container>

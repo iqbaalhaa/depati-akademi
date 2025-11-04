@@ -7,4 +7,10 @@ export interface Mentor extends Omit<User, 'professional'> {
     name: string
     logo: string
   }
+  social?: {
+    instagram?: string
+    github?: string
+    gmail?: string
+    linkedin?: string
+  }
 }
