@@ -1,14 +1,7 @@
-import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
+import { client } from '@/sanity/lib/client'
 
-// Create Sanity client with proper configuration
-export const client = createClient({
-  projectId: 'xtleexm5',
-  dataset: 'production',
-  useCdn: false, // Disable CDN for real-time data
-  apiVersion: '2023-05-03',
-})
-
+// Reuse the shared Next-Sanity client and a single builder
 const builder = imageUrlBuilder(client)
 
 export function urlFor(source: any) {
@@ -20,7 +13,6 @@ export async function sanityFetch<T = any>(query: string, params = {}, retries =
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const result = await client.fetch(query, params)
-      console.log('Sanity fetch successful:', result)
       return result
     } catch (error) {
       console.error(`Sanity fetch attempt ${attempt} failed:`, error)
@@ -32,7 +24,6 @@ export async function sanityFetch<T = any>(query: string, params = {}, retries =
       
       // Wait before retrying (exponential backoff)
       const delay = Math.pow(2, attempt - 1) * 1000
-      console.log(`Retrying in ${delay}ms...`)
       await new Promise(resolve => setTimeout(resolve, delay))
     }
   }

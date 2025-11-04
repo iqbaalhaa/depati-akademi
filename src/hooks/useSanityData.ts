@@ -1,13 +1,6 @@
-// ✅ gunakan client resmi Sanity
+// ✅ gunakan client Sanity yang konsisten
 import { useEffect, useState } from 'react'
-import { createClient } from '@sanity/client'
-
-const client = createClient({
-  projectId: 'xtleexm5',
-  dataset: 'production',
-  apiVersion: '2023-05-03',
-  useCdn: true, // true cukup untuk data publik
-})
+import { client } from '@/sanity/lib/client'
 
 export function useHomePageData() {
   const [data, setData] = useState(null)
