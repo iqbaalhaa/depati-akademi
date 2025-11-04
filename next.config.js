@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // TypeScript errors will fail the build. We keep it strict now.
   typescript: {
-    // Allow production builds to succeed even if type errors are present.
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   images: {
     qualities: [75, 97],
