@@ -9,6 +9,7 @@ import team from './team'
 import job from './job'
 import application from './application'
 import role from './role'
+import footer from './footer'
 
 export const schemaTypes = [
   home,
@@ -22,4 +23,5 @@ export const schemaTypes = [
   job,
   application,
   role,
+  footer,
 ]

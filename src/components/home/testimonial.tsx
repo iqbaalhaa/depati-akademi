@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -11,7 +11,9 @@ import IconArrowBack from '@mui/icons-material/ArrowBack'
 import IconArrowForward from '@mui/icons-material/ArrowForward'
 
 import { TestimonialItem } from '@/components/testimonial'
-import { data } from './testimonial.data'
+import type { Testimonial } from '@/interfaces/testimonial'
+import type { SanityHomePage, SanityTestimonial } from '@/interfaces/sanity'
+import { sanityFetch, urlFor } from '@/utils/sanity'
 
 interface SliderArrowArrow {
   onClick?: () => void
@@ -51,6 +53,44 @@ const StyledSlickContainer = styled('div')(() => ({
 
 const HomeTestimonial: FC = () => {
   const sliderRef = useRef(null)
+  const [items, setItems] = useState<Testimonial[]>([])
+  const [homeMeta, setHomeMeta] = useState<Partial<SanityHomePage> | null>(null)
+
+  useEffect(() => {
+    let mounted = true
+    ;(async () => {
+      try {
+        const [home, testimonials] = await Promise.all([
+          sanityFetch<SanityHomePage>(`*[_type == "home"][0]{ testimonialTitle, testimonialImage }`),
+          sanityFetch<SanityTestimonial[]>(
+            `*[_type == "testimonial"]|order(_createdAt desc){ _id, name, photo, content, rating }`
+          ),
+        ])
+
+        const mapped: Testimonial[] = (testimonials || []).map((t) => ({
+          id: t._id,
+          title: t.name || 'Testimonial',
+          content: t.content,
+          user: {
+            id: t._id,
+            name: t.name,
+            professional: 'Student',
+            photo: t.photo ? urlFor(t.photo).width(100).height(100).fit('crop').url() : '1.jpg',
+          },
+        }))
+
+        if (mounted) {
+          setItems(mapped)
+          setHomeMeta(home || null)
+        }
+      } catch (err) {
+        console.error('Failed to load testimonials from Sanity:', err)
+      }
+    })()
+    return () => {
+      mounted = false
+    }
+  }, [])
 
   const sliderConfig: Settings = {
     infinite: true,
@@ -78,36 +118,12 @@ const HomeTestimonial: FC = () => {
                 fontWeight: 'bold',
               }}
             >
-              Testimonial What our{' '}
-              <Typography
-                component="mark"
-                sx={{
-                  position: 'relative',
-                  color: 'primary.main',
-                  fontSize: 'inherit',
-                  fontWeight: 'inherit',
-                  backgroundColor: 'unset',
-                }}
-              >
-                Students{' '}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: { xs: 20, md: 28 },
-                    left: 2,
-                    '& img': { width: { xs: 130, md: 175 }, height: 'auto' },
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/images/headline-curve.svg" alt="Headline curve" />
-                </Box>
-              </Typography>
-              Say
+              {homeMeta?.testimonialTitle || 'Testimonial What our Students Say'}
             </Typography>
 
             <StyledSlickContainer>
               <Slider ref={sliderRef} {...sliderConfig}>
-                {data.map((item, index) => (
+                {items.map((item, index) => (
                   <TestimonialItem key={String(index)} item={item} />
                 ))}
               </Slider>
@@ -115,7 +131,17 @@ const HomeTestimonial: FC = () => {
           </Grid>
           <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'block' } }}>
             <Box sx={{ width: { xs: '100%', md: '90%' } }}>
-              <Image src="/images/home-testimonial.png" width={420} height={440} quality={97} alt="Testimonial img" />
+              {homeMeta?.testimonialImage ? (
+                <Image
+                  src={urlFor(homeMeta.testimonialImage).width(420).height(440).fit('max').url()}
+                  width={420}
+                  height={440}
+                  quality={97}
+                  alt="Testimonial img"
+                />
+              ) : (
+                <Image src="/images/home-testimonial.png" width={420} height={440} quality={97} alt="Testimonial img" />
+              )}
             </Box>
           </Grid>
         </Grid>

@@ -18,11 +18,11 @@ export const navigations: Navigation[] = [
     path: 'feature', // '/feature',
   },
   {
-    label: 'Testimonial',
-    path: 'testimonial', // '/testimonial',
-  },
-  {
     label: 'Team',
     path: 'mentors', // '/mentors',
+  },
+  {
+    label: 'Testimonial',
+    path: 'testimonial', // '/testimonial',
   },
 ]

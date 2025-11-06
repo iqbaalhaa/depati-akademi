@@ -44,9 +44,13 @@ const TestimonialItem: FC<Props> = ({ item }) => {
           }}
         >
           <Image
-            src={`/images/avatars/${item.user.photo}`}
+            src={
+              item.user.photo?.startsWith('http')
+                ? (item.user.photo as string)
+                : `/images/avatars/${item.user.photo || '1.jpg'}`
+            }
             width={100}
-            height={100}
+            height={55}
             quality={97}
             alt={item.user.name}
           />

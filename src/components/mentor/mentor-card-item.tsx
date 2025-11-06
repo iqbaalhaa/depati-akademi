@@ -50,15 +50,16 @@ const MentorCardItem: FC<Props> = ({ item }) => {
               backfaceVisibility: 'hidden',
               p: 2,
               borderRadius: 3,
-              boxShadow: 4,
+              boxShadow: 6,
               display: 'flex',
               flexDirection: 'column',
               background: (theme: Theme) =>
-                `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.10)} 0%, ${alpha(
-                  theme.palette.secondary.main,
-                  0.10
-                )} 100%)`,
-              border: (theme: Theme) => `1px solid ${alpha(theme.palette.primary.main, 0.16)}`,
+                `linear-gradient(135deg,
+                  ${alpha(theme.palette.primary.main, 0.28)} 0%,
+                  ${alpha(theme.palette.secondary.main, 0.26)} 45%,
+                  ${alpha(theme.palette.primary.light || theme.palette.primary.main, 0.22)} 100%
+                )`,
+              border: (theme: Theme) => `1px solid ${alpha(theme.palette.primary.main, 0.20)}`,
             }}
           >
             <Box
@@ -96,16 +97,17 @@ const MentorCardItem: FC<Props> = ({ item }) => {
               backfaceVisibility: 'hidden',
               p: 2,
               borderRadius: 3,
-              boxShadow: 4,
+              boxShadow: 6,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               background: (theme: Theme) =>
-                `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.18)} 0%, ${alpha(
-                  theme.palette.secondary.main,
-                  0.18
-                )} 100%)`,
-              border: (theme: Theme) => `1px solid ${alpha(theme.palette.secondary.main, 0.20)}`,
+                `linear-gradient(135deg,
+                  ${alpha(theme.palette.secondary.main, 0.32)} 0%,
+                  ${alpha(theme.palette.primary.main, 0.30)} 50%,
+                  ${alpha(theme.palette.secondary.light || theme.palette.secondary.main, 0.26)} 100%
+                )`,
+              border: (theme: Theme) => `1px solid ${alpha(theme.palette.secondary.main, 0.24)}`,
             }}
           >
             <Typography variant="h6" sx={{ mb: 1, fontWeight: 700 }}>
@@ -130,7 +132,17 @@ const MentorCardItem: FC<Props> = ({ item }) => {
                   rel="noopener noreferrer"
                   size="small"
                   onClick={(e) => e.stopPropagation()}
-                  sx={{ color: 'primary.main', backgroundColor: 'background.paper', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
+                  sx={{
+                    color: 'primary.main',
+                    backgroundColor: 'background.paper',
+                    '&:hover': (theme: Theme) => ({
+                      backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.85)} 0%, ${alpha(
+                        theme.palette.secondary.main,
+                        0.85
+                      )} 100%)`,
+                      color: theme.palette.primary.contrastText,
+                    }),
+                  }}
                 >
                   <InstagramIcon fontSize="small" />
                 </IconButton>
@@ -144,7 +156,17 @@ const MentorCardItem: FC<Props> = ({ item }) => {
                   rel="noopener noreferrer"
                   size="small"
                   onClick={(e) => e.stopPropagation()}
-                  sx={{ color: 'primary.main', backgroundColor: 'background.paper', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
+                  sx={{
+                    color: 'primary.main',
+                    backgroundColor: 'background.paper',
+                    '&:hover': (theme: Theme) => ({
+                      backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.85)} 0%, ${alpha(
+                        theme.palette.secondary.main,
+                        0.85
+                      )} 100%)`,
+                      color: theme.palette.primary.contrastText,
+                    }),
+                  }}
                 >
                   <GitHubIcon fontSize="small" />
                 </IconButton>
@@ -158,7 +180,17 @@ const MentorCardItem: FC<Props> = ({ item }) => {
                   rel={item.social.gmail.includes('@') && !item.social.gmail.startsWith('http') ? undefined : 'noopener noreferrer'}
                   size="small"
                   onClick={(e) => e.stopPropagation()}
-                  sx={{ color: 'primary.main', backgroundColor: 'background.paper', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
+                  sx={{
+                    color: 'primary.main',
+                    backgroundColor: 'background.paper',
+                    '&:hover': (theme: Theme) => ({
+                      backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.85)} 0%, ${alpha(
+                        theme.palette.secondary.main,
+                        0.85
+                      )} 100%)`,
+                      color: theme.palette.primary.contrastText,
+                    }),
+                  }}
                 >
                   <EmailIcon fontSize="small" />
                 </IconButton>
@@ -172,7 +204,17 @@ const MentorCardItem: FC<Props> = ({ item }) => {
                   rel="noopener noreferrer"
                   size="small"
                   onClick={(e) => e.stopPropagation()}
-                  sx={{ color: 'primary.main', backgroundColor: 'background.paper', '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
+                  sx={{
+                    color: 'primary.main',
+                    backgroundColor: 'background.paper',
+                    '&:hover': (theme: Theme) => ({
+                      backgroundImage: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.85)} 0%, ${alpha(
+                        theme.palette.secondary.main,
+                        0.85
+                      )} 100%)`,
+                      color: theme.palette.primary.contrastText,
+                    }),
+                  }}
                 >
                   <LinkedInIcon fontSize="small" />
                 </IconButton>

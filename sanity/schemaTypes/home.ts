@@ -73,5 +73,19 @@ export default defineType({
       description: 'Judul untuk section Our Expert Mentors',
       initialValue: 'Our Expert Mentors',
     }),
+    defineField({
+      name: 'testimonialTitle',
+      title: 'Judul Section Testimonial',
+      type: 'string',
+      description: 'Judul untuk section Testimonial',
+      initialValue: 'Testimonial What our Students Say',
+    }),
+    defineField({
+      name: 'testimonialImage',
+      title: 'Gambar Samping Testimonial',
+      type: 'image',
+      description: 'Opsional: gambar di sisi kanan section testimonial',
+      options: { hotspot: true },
+    }),
   ],
 })

@@ -59,6 +59,8 @@ export interface SanityHomePage extends SanityDocument {
   certificateDescription: string
   popularCoursesTitle?: string
   mentorsTitle?: string
+  testimonialTitle?: string
+  testimonialImage?: SanityImage
 }
 
 // Program interface (basic structure)
@@ -66,8 +68,11 @@ export interface SanityProgram extends SanityDocument {
   _type: 'program'
   title: string
   description?: string
+  slug?: { current: string }
   image?: SanityImage
   price?: number
+  normalPrice?: number
+  discountPrice?: number
   duration?: string
   rating?: number
   ratingCount?: number
@@ -112,4 +117,30 @@ export interface SanitySiteSettings extends SanityDocument {
     secondaryMain?: string
     accentMain?: string
   }
+}
+
+// Footer settings interface
+export interface SanityFooter extends SanityDocument {
+  _type: 'footer'
+  title?: string
+  description?: string
+  backgroundColor?: string
+  textColor?: string
+  backgroundImage?: SanityImage
+  socialLinks?: SanitySocialLink[]
+  courseMenu?: SanityNavItem[]
+  pageMenu?: SanityNavItem[]
+  companyMenu?: SanityNavItem[]
+  copyright?: string
+}
+
+export interface SanitySocialLink {
+  name: string
+  link: string
+  icon?: SanityImage
+}
+
+export interface SanityNavItem {
+  label: string
+  path: string
 }

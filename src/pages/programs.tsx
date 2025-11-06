@@ -7,8 +7,10 @@ import { client } from '@/sanity/lib/client'
 import type { Course } from '@/interfaces/course'
 import type { SanityProgram } from '@/interfaces/sanity'
 import { CourseCardItem } from '@/components/course'
+import { MainLayout } from '@/components/layout'
+import { NextPageWithLayout } from '@/interfaces/layout'
 
-const ProgramsPage: React.FC = () => {
+const ProgramsPage: NextPageWithLayout = () => {
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState(true)
   const builder = useMemo(() => imageUrlBuilder(client), [])
@@ -22,7 +24,10 @@ const ProgramsPage: React.FC = () => {
         `*[_type == "program"] | order(_createdAt desc){
           _id,
           title,
+          slug,
           price,
+          normalPrice,
+          discountPrice,
           duration,
           image,
           rating,
@@ -30,15 +35,29 @@ const ProgramsPage: React.FC = () => {
         }`
       )
       .then((items) => {
-        const mapped: Course[] = items.map((p) => ({
-          id: p._id,
-          title: p.title,
-          cover: p.image ? builder.image(p.image).width(360).height(240).url() : '/images/courses/christopher-gower-m_HRfLhgABo-unsplash.jpg',
-          rating: typeof p.rating === 'number' ? p.rating : 5,
-          ratingCount: typeof p.ratingCount === 'number' ? p.ratingCount : 0,
-          price: typeof p.price === 'number' ? p.price : 0,
-          category: p.duration || 'Program',
-        }))
+        const mapped: Course[] = items.map((p) => {
+          const normal = typeof p.normalPrice === 'number'
+            ? p.normalPrice
+            : (typeof p.price === 'number' ? p.price : 0)
+          const discount = typeof p.discountPrice === 'number'
+            ? p.discountPrice
+            : normal
+          const percent = normal > 0 && discount < normal
+            ? Math.round(((normal - discount) / normal) * 100)
+            : 0
+          return {
+            id: p._id,
+            slug: p.slug?.current,
+            title: p.title,
+            cover: p.image ? builder.image(p.image).width(360).height(240).url() : '/images/courses/christopher-gower-m_HRfLhgABo-unsplash.jpg',
+            rating: typeof p.rating === 'number' ? p.rating : 5,
+            ratingCount: typeof p.ratingCount === 'number' ? p.ratingCount : 0,
+            price: discount,
+            originalPrice: normal,
+            discountPercent: percent > 0 ? percent : undefined,
+            category: p.duration || 'Program',
+          }
+        })
         setCourses(mapped)
       })
       .catch((err) => {
@@ -71,3 +90,5 @@ const ProgramsPage: React.FC = () => {
 }
 
 export default ProgramsPage
+
+ProgramsPage.getLayout = (page) => <MainLayout>{page}</MainLayout>

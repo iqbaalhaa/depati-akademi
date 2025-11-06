@@ -13,7 +13,7 @@ const FooterSectionTitle = ({ title }: FooterSectionTitleProps) => {
         mb: 2,
       }}
     >
-      <Typography component="p" variant="h5" sx={{ color: 'primary.contrastText', fontWeight: '700' }}>
+      <Typography component="p" variant="h5" sx={{ color: 'inherit', fontWeight: '700' }}>
         {title}
       </Typography>
     </Box>

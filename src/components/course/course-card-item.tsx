@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import IconButton, { iconButtonClasses } from '@mui/material/IconButton'
 import ArrowForward from '@mui/icons-material/ArrowForward'
 import { Course } from '@/interfaces/course'
+import NextLink from 'next/link'
 
 interface Props {
   item: Course
@@ -55,7 +56,9 @@ const CourseCardItem: FC<Props> = ({ item }) => {
         </Box>
         <Box sx={{ mb: 2 }}>
           <Typography component="h2" variant="h5" sx={{ mb: 2, height: 56, overflow: 'hidden', fontSize: '1.2rem' }}>
-            {item.title}
+            <Box component={NextLink} href={`/programs/${item.slug || item.id}`} sx={{ color: 'text.primary', textDecoration: 'none' }}>
+              {item.title}
+            </Box>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Rating name="rating-course" value={item.rating} max={5} sx={{ color: '#ffce31', mr: 1 }} readOnly />
@@ -65,15 +68,50 @@ const CourseCardItem: FC<Props> = ({ item }) => {
           </Box>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h5" color="primary.main">
-              {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(
-                Number(item.price) || 0
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            {typeof item.originalPrice === 'number' && item.originalPrice > (Number(item.price) || 0) && (
+              <Typography
+                variant="body1"
+                sx={{ color: 'text.secondary', textDecoration: 'line-through', mb: 0.5 }}
+              >
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                  maximumFractionDigits: 0,
+                }).format(Number(item.originalPrice) || 0)}
+              </Typography>
+            )}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h5" color="primary.main">
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                  maximumFractionDigits: 0,
+                }).format(Number(item.price) || 0)}
+              </Typography>
+              {typeof item.discountPercent === 'number' && item.discountPercent > 0 && (
+                <Box
+                  component="span"
+                  sx={{
+                    px: 1,
+                    py: 0.5,
+                    borderRadius: 1,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: 'success.contrastText',
+                    backgroundColor: 'success.main',
+                    lineHeight: 1,
+                  }}
+                >
+                  -{item.discountPercent}%
+                </Box>
               )}
-            </Typography>
+            </Box>
           </Box>
           <IconButton
             color="primary"
+            component={NextLink}
+            href={`/programs/${item.slug || item.id}`}
             sx={{ '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
           >
             <ArrowForward />

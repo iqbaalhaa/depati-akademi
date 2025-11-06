@@ -31,16 +31,14 @@ export const socialLinks: SocialLink[] = [
   },
 ]
 
-interface SocialLinkItemProps {
-  item: SocialLink
-}
+interface SocialLinkItemProps { item: SocialLink }
 
 const SocialLinkItem: FC<SocialLinkItemProps> = ({ item }) => (
   <Box
     component="li"
     sx={{
       display: 'inline-block',
-      color: 'primary.contrastText',
+      color: 'inherit',
       mr: 0.5,
     }}
   >
@@ -72,8 +70,8 @@ const SocialLinkItem: FC<SocialLinkItemProps> = ({ item }) => (
   </Box>
 )
 
-// default
-const SocialLinks: FC = () => {
+// default + allow override via props
+const SocialLinks: FC<{ links?: SocialLink[] }> = ({ links }) => {
   return (
     <Box sx={{ ml: -1 }}>
       <Box
@@ -86,7 +84,7 @@ const SocialLinks: FC = () => {
           listStyle: 'none',
         }}
       >
-        {socialLinks.map((item) => {
+        {(links && links.length > 0 ? links : socialLinks).map((item) => {
           return <SocialLinkItem key={item.name} item={item} />
         })}
       </Box>
