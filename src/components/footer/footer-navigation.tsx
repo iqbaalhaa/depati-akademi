@@ -16,7 +16,7 @@ interface NavigationItemProps {
   path: string
 }
 
-const NavigationItem = ({ label, path }: NavigationItemProps) => {
+const NavigationItem = ({ label, path }: NavigationItemProps): JSX.Element => {
   return (
     <MuiLink
       component={NextLink}
@@ -55,7 +55,7 @@ const defaultCompanyMenu: Array<Navigation> = [
   { label: 'FAQ', path: '/' },
 ]
 
-const FooterNavigation = ({ courseMenu, pageMenu, companyMenu }: Props) => {
+const FooterNavigation = ({ courseMenu, pageMenu, companyMenu }: Props): JSX.Element => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={4}>

@@ -32,24 +32,36 @@ const Header: FC = () => {
               justifyContent: 'space-between',
               flexDirection: { xs: 'column', md: 'row' },
 
-              transition: (theme: any) => theme.transitions.create(['top']),
+              transition: (theme: any) => theme.transitions.create(['right', 'height', 'background-color', 'color']),
               ...(matchMobileView && {
-                py: 6,
-                backgroundColor: 'background.paper',
+                py: 5,
+                px: 2,
+                backgroundColor: (theme: any) => theme.palette.mode === 'dark' ? theme.palette.background.paper : theme.palette.background.paper,
+                color: (theme: any) => theme.palette.text.primary,
                 zIndex: 'appBar',
                 position: 'fixed',
                 height: { xs: '100vh', md: 'auto' },
-                top: visibleMenu ? 0 : '-120vh',
-                left: 0,
+                width: { xs: '75vw', md: 'auto' },
+                top: 0,
+                right: visibleMenu ? 0 : '-75vw',
+                boxShadow: 3,
+                borderRadius: '16px 0 0 16px',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                gap: 2,
+                alignItems: 'stretch',
+                justifyContent: 'flex-start',
+                overflowY: 'auto',
+                '& .react-scroll-link': {
+                  color: 'text.primary',
+                },
               }),
             }}
           >
-            <Box /> {/* Magic space */}
-            <Navigation />
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {/* ThemeToggle is fine here; no rewrite needed unless you want to add props or styling */}
+            <Box sx={{ order: { xs: -1, md: 0 }, alignSelf: { xs: 'flex-start', md: 'auto' }, mb: { xs: 1, md: 0 } }}>
               {React.createElement(ThemeToggle)}
             </Box>
+            <Navigation />
             {visibleMenu && matchMobileView && (
               <IconButton
                 sx={{

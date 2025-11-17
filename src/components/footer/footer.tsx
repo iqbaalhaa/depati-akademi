@@ -42,7 +42,8 @@ const Footer: FC = () => {
   const textColor = settings?.textColor || 'primary.contrastText'
   const bgImageUrl = settings?.backgroundImage ? urlFor(settings.backgroundImage).width(1600).url() : null
   const title = settings?.title || 'Coursespace'
-  const description = settings?.description || 'Coursespace is an online learning platform that has been operating since 2018 until now.'
+  const description =
+    settings?.description || 'Coursespace is an online learning platform that has been operating since 2018 until now.'
   const copyright = settings?.copyright || `© ${new Date().getFullYear()} ${title}. All rights reserved.`
   const dynamicSocialLinks: SocialLink[] = (settings?.socialLinks || []).map((s: SanitySocialLink) => ({
     name: s.name,
@@ -59,8 +60,8 @@ const Footer: FC = () => {
       component="footer"
       sx={{
         backgroundColor: bgColor,
-        color: textColor,
-        py: { xs: 6, md: 10 },
+        color: (theme) => (theme.palette.mode === 'dark' ? theme.palette.text.primary : textColor),
+        py: { xs: 3, md: 4 },
         ...(bgImageUrl
           ? {
               backgroundImage: `url(${bgImageUrl})`,
@@ -89,7 +90,7 @@ const Footer: FC = () => {
           </Grid>
         </Grid>
       </Container>
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ mt: 3 }}>
         <Typography variant="caption" sx={{ display: 'block', opacity: 0.9 }}>
           {copyright}
         </Typography>

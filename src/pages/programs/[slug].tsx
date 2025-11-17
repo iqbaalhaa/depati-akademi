@@ -96,8 +96,8 @@ const ProgramDetailPage: NextPage<PageProps> & { getLayout?: (page: React.ReactE
             </Typography>
           </Box>
 
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Button variant="contained" color="primary">Daftar Sekarang</Button>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: { xs: 1.5, md: 2 } }}>
+            <Button variant="contained" color="primary" sx={{ mb: { xs: 1.5, md: 0 } }}>Daftar Sekarang</Button>
             <Button variant="outlined" color="primary">Dapatkan Promo</Button>
           </Box>
         </Grid>

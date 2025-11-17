@@ -57,7 +57,7 @@ const SocialLinkItem: FC<SocialLinkItemProps> = ({ item }) => (
           backgroundColor: 'secondary.main',
         },
         '& img': {
-          fill: 'currentColor',
+          filter: (theme) => (theme.palette.mode === 'dark' ? 'brightness(0) invert(1)' : 'none'),
           width: 22,
           height: 'auto',
         },

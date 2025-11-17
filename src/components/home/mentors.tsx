@@ -110,7 +110,7 @@ const HomeOurMentors: FC = () => {
       .then((home) => {
         if (home?.mentorsTitle) setSectionTitle(home.mentorsTitle)
       })
-      .catch(() => {})
+      .catch(() => { return null })
   }, [builder])
 
   const sliderConfig: Settings = {
@@ -133,14 +133,14 @@ const HomeOurMentors: FC = () => {
       id="mentors"
       sx={{
         pt: {
-          xs: 6,
+          xs: 4,
           md: 8,
         },
         pb: {
-          xs: 8,
+          xs: 6,
           md: 12,
         },
-        backgroundColor: '#ecf3f3',
+        backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.background.default : '#ecf3f3',
       }}
     >
       <Container maxWidth="lg">

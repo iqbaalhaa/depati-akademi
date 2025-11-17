@@ -178,7 +178,7 @@ const HomePopularCourse: FC = () => {
               <Link href="/programs" passHref style={{ textDecoration: 'none' }}>
                 <Box
                   sx={{
-                    height: 520,
+                    height: { xs: 360, md: 520 },
                     width: '100%',
                     borderRadius: 4,
                     p: 2,
@@ -186,15 +186,33 @@ const HomePopularCourse: FC = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    background: 'linear-gradient(180deg, #cbe8ff 0%, #9fd4ff 100%)',
+                    background: (theme) =>
+                      theme.palette.mode === 'dark'
+                        ? `linear-gradient(180deg, ${theme.palette.background.paper} 0%, ${theme.palette.background.default} 100%)`
+                        : 'linear-gradient(180deg, #cbe8ff 0%, #9fd4ff 100%)',
                     cursor: 'pointer',
                     '&:hover': { boxShadow: 2 },
                   }}
                 >
-                  <Box sx={{ mt: 'auto', mb: 'auto' }}>
+                  <Box
+                    sx={{
+                      mt: 'auto',
+                      mb: 'auto',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                  >
                     <Typography
                       variant="h6"
-                      sx={{ fontWeight: 700, fontSize: { xs: 22, md: 28 }, textDecoration: 'none', mb: 2 }}
+                      sx={{
+                        fontWeight: 700,
+                        fontSize: { xs: 22, md: 28 },
+                        textDecoration: 'none',
+                        textAlign: 'center',
+                        mb: 2,
+                      }}
                     >
                       Lihat semua program kursus
                     </Typography>
@@ -219,10 +237,8 @@ const HomePopularCourse: FC = () => {
                       component="img"
                       src={'/images/home-feature.png'}
                       alt={'Lihat semua program'}
-                      width={360}
-                      height={240}
+                      sx={{ display: 'block', width: '100%', height: { xs: 160, md: 240 }, objectFit: 'cover' }}
                       loading="lazy"
-                      style={{ display: 'block', width: '100%', height: 'auto' }}
                     />
                   </Box>
                 </Box>

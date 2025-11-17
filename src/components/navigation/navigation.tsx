@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme, alpha } from '@mui/material/styles'
 import NextLink from 'next/link'
 import { Link as ScrollLink } from 'react-scroll'
 import { navigations } from './navigation.data'
@@ -45,22 +47,41 @@ const Navigation: FC = () => {
         return true // keep Home and other links
     }
   })
+  const theme = useTheme()
+  const { breakpoints } = theme
+  const matchMobileView = useMediaQuery(breakpoints.down('md'))
   return (
     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
       {visibleNavigations.map(({ path: destination, label }) => {
         const isPageLink = destination.startsWith('/') || destination === '#'
-        const commonStyle: React.CSSProperties = {
-          position: 'relative',
-          color: destination === '/' ? '#2365b7' : '#4a4f54ff',
-          cursor: 'pointer',
-          fontWeight: 600,
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '0 24px',
-          marginBottom: '0',
-          fontSize: 'inherit',
-        }
+        const commonStyle: React.CSSProperties = matchMobileView
+          ? {
+              position: 'relative',
+              color: theme.palette.text.primary,
+              cursor: 'pointer',
+              fontWeight: 600,
+              display: 'block',
+              padding: '10px 14px',
+              margin: '6px auto',
+              fontSize: '1rem',
+              borderRadius: 12,
+              background: alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.12 : 0.06),
+              border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.18 : 0.12)}`,
+              boxShadow: '0 6px 18px rgba(0,0,0,0.08)',
+              maxWidth: 520,
+            }
+          : {
+              position: 'relative',
+              color: destination === '/' ? theme.palette.primary.main : theme.palette.text.primary,
+              cursor: 'pointer',
+              fontWeight: 600,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '0 24px',
+              marginBottom: '0',
+              fontSize: 'inherit',
+            }
 
         const HeadlineCurve = (
           <div

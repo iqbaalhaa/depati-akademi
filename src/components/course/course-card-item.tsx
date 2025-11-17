@@ -1,10 +1,8 @@
 import React, { FC } from 'react'
 // Using native img via MUI Box to avoid Next/Image TS type conflict during build
 import Box from '@mui/material/Box'
-import Rating from '@mui/material/Rating'
 import Typography from '@mui/material/Typography'
 import IconButton, { iconButtonClasses } from '@mui/material/IconButton'
-import ArrowForward from '@mui/icons-material/ArrowForward'
 import { Course } from '@/interfaces/course'
 import NextLink from 'next/link'
 import Button from '@mui/material/Button'
@@ -22,7 +20,7 @@ const CourseCardItem: FC<Props> = ({ item }) => {
   React.useEffect(() => {
     const el = bulletRef.current
     if (!el) return
-    const check = () => {
+    const check = (): void => {
       setIsOverflowing(el.scrollHeight > el.clientHeight + 1)
     }
     check()
@@ -184,7 +182,10 @@ const CourseCardItem: FC<Props> = ({ item }) => {
               left: 0,
               right: 0,
               height: 28,
-              background: 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1))',
+              background: (theme: any) =>
+                theme.palette.mode === 'dark'
+                  ? 'linear-gradient(to bottom, rgba(34,33,40,0), rgba(34,33,40,1))'
+                  : 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1))',
               display: isOverflowing ? 'block' : 'none',
             },
           }}

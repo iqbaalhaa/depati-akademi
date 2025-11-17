@@ -110,7 +110,7 @@ const HomeHero: FC = () => {
   const heroImageUrl = data?.heroImage ? urlFor(data.heroImage).width(475).height(487).url() : '/images/home-hero1.jpg'
 
   return (
-    <Box id="hero" sx={{ backgroundColor: 'background.paper', position: 'relative', pt: 4, pb: { xs: 8, md: 10 } }}>
+    <Box id="hero" sx={{ backgroundColor: 'background.paper', position: 'relative', pt: 4, pb: { xs: 6, md: 10 } }}>
       <Container maxWidth="lg">
         <Grid container spacing={0} sx={{ flexDirection: { xs: 'column', md: 'unset' } }}>
           {/* Text Content */}
@@ -170,10 +170,11 @@ const HomeHero: FC = () => {
                       position: 'relative',
                       '& svg': {
                         position: 'absolute',
-                        top: -16,
-                        right: -21,
-                        width: { xs: 22, md: 30 },
+                        top: { xs: -10, md: -16 },
+                        right: { xs: -14, md: -21 },
+                        width: { xs: 18, md: 30 },
                         height: 'auto',
+                        opacity: { xs: 0.8, md: 1 },
                       },
                     }}
                   >
@@ -206,7 +207,15 @@ const HomeHero: FC = () => {
               </Box>
 
               {/* CTA Buttons */}
-              <Box sx={{ '& button': { mr: 2 } }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  alignItems: { xs: 'stretch', md: 'center' },
+                  gap: { xs: 1.5, md: 0 },
+                  '& button': { mr: { md: 2 }, mb: { xs: 1.5, md: 0 } },
+                }}
+              >
                 <ScrollLink to="popular-course" spy={true} smooth={true} offset={0} duration={350}>
                   <StyledButton color="primary" size="large" variant="contained">
                     {ctaPrimary}
@@ -226,30 +235,30 @@ const HomeHero: FC = () => {
             <Box
               sx={{
                 position: 'absolute',
-                bottom: 30,
-                left: { xs: 0, md: -150 },
+                bottom: { xs: 4, md: 30 },
+                left: { xs: 8, md: -150 },
                 boxShadow: 1,
                 borderRadius: 3,
-                px: 2,
-                py: 1.4,
-                zIndex: 1,
+                px: { xs: 1.5, md: 2 },
+                py: { xs: 1, md: 1.4 },
+                zIndex: 2,
                 backgroundColor: 'background.paper',
                 display: 'flex',
                 alignItems: 'flex-start',
-                width: 280,
+                width: { xs: 240, md: 280 },
               }}
             >
               <Box
                 sx={{
                   boxShadow: 1,
                   borderRadius: '50%',
-                  width: 44,
-                  height: 44,
+                  width: { xs: 36, md: 44 },
+                  height: { xs: 36, md: 44 },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   mr: 2,
-                  '& img': { width: '32px !important', height: 'auto' },
+                  '& img': { width: { xs: '24px !important', md: '32px !important' }, height: 'auto' },
                 }}
               >
                 <Image src="/images/certificate.png" alt="Certificate icon" width={50} height={50} />
@@ -257,7 +266,7 @@ const HomeHero: FC = () => {
               <Box>
                 <Typography
                   component="h6"
-                  sx={{ color: 'secondary.main', fontSize: '1.1rem', fontWeight: 700, mb: 0.5 }}
+                  sx={{ color: 'secondary.main', fontSize: { xs: '1rem', md: '1.1rem' }, fontWeight: 700, mb: 0.5 }}
                 >
                   Sertifikat
                 </Typography>
@@ -267,9 +276,16 @@ const HomeHero: FC = () => {
               </Box>
             </Box>
 
-            <Box sx={{ lineHeight: 0 }}>
+            <Box sx={{ lineHeight: 0, width: '100%', maxWidth: { xs: '100%', md: 475 }, mx: { xs: 'auto', md: 0 } }}>
               {/* if heroImageUrl is external (sanity CDN) ensure next.config.js allows cdn.sanity.io */}
-              <Image src={heroImageUrl} width={475} height={487} alt="Hero image" />
+              <Image
+                src={heroImageUrl}
+                alt="Hero image"
+                width={475}
+                height={487}
+                sizes="(max-width: 900px) 100vw, 475px"
+                style={{ width: '100%', height: 'auto' }}
+              />
             </Box>
           </Grid>
         </Grid>

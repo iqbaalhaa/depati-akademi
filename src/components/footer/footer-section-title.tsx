@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 
 type FooterSectionTitleProps = { title: string }
 
-const FooterSectionTitle = ({ title }: FooterSectionTitleProps) => {
+const FooterSectionTitle = ({ title }: FooterSectionTitleProps): JSX.Element => {
   return (
     <Box
       sx={{
