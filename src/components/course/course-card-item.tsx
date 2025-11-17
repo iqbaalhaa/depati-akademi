@@ -7,12 +7,29 @@ import IconButton, { iconButtonClasses } from '@mui/material/IconButton'
 import ArrowForward from '@mui/icons-material/ArrowForward'
 import { Course } from '@/interfaces/course'
 import NextLink from 'next/link'
+import Button from '@mui/material/Button'
+import Link from 'next/link'
+import CheckCircleOutline from '@mui/icons-material/CheckCircleOutline'
 
 interface Props {
   item: Course
 }
 
 const CourseCardItem: FC<Props> = ({ item }) => {
+  const bulletRef = React.useRef<HTMLUListElement | null>(null)
+  const [isOverflowing, setIsOverflowing] = React.useState(false)
+
+  React.useEffect(() => {
+    const el = bulletRef.current
+    if (!el) return
+    const check = () => {
+      setIsOverflowing(el.scrollHeight > el.clientHeight + 1)
+    }
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   return (
     <Box
       sx={{
@@ -25,6 +42,7 @@ const CourseCardItem: FC<Props> = ({ item }) => {
           p: 2,
           backgroundColor: 'background.paper',
           borderRadius: 4,
+          position: 'relative',
           transition: (theme: any) => theme.transitions.create(['box-shadow']),
           '&:hover': {
             boxShadow: 2,
@@ -34,8 +52,30 @@ const CourseCardItem: FC<Props> = ({ item }) => {
               boxShadow: 2,
             },
           },
+          display: 'flex',
+          flexDirection: 'column',
+          height: 520,
         }}
       >
+        {typeof item.discountPercent === 'number' && item.discountPercent > 0 && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              left: 8,
+              backgroundColor: 'warning.main',
+              color: 'warning.contrastText',
+              px: 1.2,
+              py: 0.5,
+              borderRadius: 1,
+              fontSize: 12,
+              fontWeight: 700,
+              boxShadow: 1,
+            }}
+          >
+            Diskon {item.discountPercent}%
+          </Box>
+        )}
         <Box
           sx={{
             lineHeight: 0,
@@ -51,29 +91,25 @@ const CourseCardItem: FC<Props> = ({ item }) => {
             width={360}
             height={240}
             loading="lazy"
-            style={{ display: 'block', width: '100%', height: 'auto' }}
+            sx={{ display: 'block', width: '100%', height: 240, objectFit: 'cover' }}
           />
         </Box>
         <Box sx={{ mb: 2 }}>
           <Typography component="h2" variant="h5" sx={{ mb: 2, height: 56, overflow: 'hidden', fontSize: '1.2rem' }}>
-            <Box component={NextLink} href={`/programs/${item.slug || item.id}`} sx={{ color: 'text.primary', textDecoration: 'none' }}>
+            <Box
+              component={NextLink}
+              href={`/programs/${item.slug || item.id}`}
+              sx={{ color: 'text.primary', textDecoration: 'none' }}
+            >
               {item.title}
             </Box>
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Rating name="rating-course" value={item.rating} max={5} sx={{ color: '#ffce31', mr: 1 }} readOnly />
-            <Typography component="span" variant="h5">
-              ({item.ratingCount})
-            </Typography>
-          </Box>
+          {/* Rating stars removed per request */}
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {typeof item.originalPrice === 'number' && item.originalPrice > (Number(item.price) || 0) && (
-              <Typography
-                variant="body1"
-                sx={{ color: 'text.secondary', textDecoration: 'line-through', mb: 0.5 }}
-              >
+              <Typography variant="caption" sx={{ color: 'text.secondary', textDecoration: 'line-through', mb: 0.5 }}>
                 {new Intl.NumberFormat('id-ID', {
                   style: 'currency',
                   currency: 'IDR',
@@ -88,6 +124,9 @@ const CourseCardItem: FC<Props> = ({ item }) => {
                   currency: 'IDR',
                   maximumFractionDigits: 0,
                 }).format(Number(item.price) || 0)}
+                <Typography component="span" variant="body2" sx={{ ml: 0.5, color: 'text.secondary' }}>
+                  / bulan
+                </Typography>
               </Typography>
               {typeof item.discountPercent === 'number' && item.discountPercent > 0 && (
                 <Box
@@ -108,15 +147,72 @@ const CourseCardItem: FC<Props> = ({ item }) => {
               )}
             </Box>
           </Box>
-          <IconButton
+          {/* <IconButton
             color="primary"
             component={NextLink}
             href={`/programs/${item.slug || item.id}`}
             sx={{ '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' } }}
           >
             <ArrowForward />
-          </IconButton>
+          </IconButton> */}
         </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}>
+          <Link href={`/programs/${item.slug || item.id}`} passHref>
+            <Button variant="contained" color="primary" sx={{ fontWeight: 700 }}>
+              Beli Paket
+            </Button>
+          </Link>
+        </Box>
+
+        {/* Bullet points below CTA */}
+        <Box
+          component="ul"
+          ref={bulletRef}
+          sx={{
+            mt: 2,
+            mb: 1,
+            pl: 0,
+            listStyle: 'none',
+            flexGrow: 1,
+            overflow: 'hidden',
+            position: 'relative',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 28,
+              background: 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1))',
+              display: isOverflowing ? 'block' : 'none',
+            },
+          }}
+        >
+          <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
+            <CheckCircleOutline sx={{ color: 'success.main', fontSize: 18, mr: 1, mt: '2px' }} />
+            <Typography variant="body2">Belajar intensif di kelas dengan tryout persiapan</Typography>
+          </Box>
+          <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
+            <CheckCircleOutline sx={{ color: 'success.main', fontSize: 18, mr: 1, mt: '2px' }} />
+            <Typography variant="body2">Sesi pertemuan online hingga 10x seminggu</Typography>
+          </Box>
+          <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
+            <CheckCircleOutline sx={{ color: 'success.main', fontSize: 18, mr: 1, mt: '2px' }} />
+            <Typography variant="body2">Akses materi dan latihan dengan kelas yang seru</Typography>
+          </Box>
+        </Box>
+
+        {/* Detail link at the very bottom */}
+        {isOverflowing && (
+          <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Link href={`/programs/${item.slug || item.id}`} passHref>
+              <Typography variant="body2" sx={{ color: 'primary.main' }}>
+                Lihat Detail
+              </Typography>
+            </Link>
+          </Box>
+        )}
       </Box>
     </Box>
   )

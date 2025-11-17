@@ -154,35 +154,14 @@ const HomePopularCourse: FC = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={3}>
-            <Box
-              sx={{
-                height: '100%',
-                width: { xs: '100%', md: '90%' },
-                display: 'flex',
-                alignItems: { xs: 'center', md: 'flex-start' },
-                justifyContent: 'center',
-                flexDirection: 'column',
-              }}
-            >
-              <Typography variant="h1" sx={{ mt: { xs: 0, md: -5 }, fontSize: { xs: 20, md: 43 } }}>
-                Kursus Paling Populer
-              </Typography>
-              <Box sx={{ mt: 2 }}>
-                <Link href="/programs" passHref>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ boxShadow: 1, '&:hover': { boxShadow: 2 } }}
-                  >
-                    Lihat Semua Kursus
-                  </Button>
-                </Link>
-              </Box>
-            </Box>
-          </Grid>
+        {/* Section title at the top */}
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h1" sx={{ fontSize: { xs: 20, md: 43 } }}>
+            Kursus Paling Populer
+          </Typography>
+        </Box>
 
+        <Grid container spacing={2}>
           <Grid item xs={12} md={9}>
             {!loading && (
               <Slider {...sliderConfig}>
@@ -191,6 +170,64 @@ const HomePopularCourse: FC = () => {
                 ))}
               </Slider>
             )}
+          </Grid>
+
+          {/* Right-side CTA card: Lihat semua program kursus */}
+          <Grid item xs={12} md={3}>
+            <Box sx={{ px: 1, py: 4 }}>
+              <Link href="/programs" passHref style={{ textDecoration: 'none' }}>
+                <Box
+                  sx={{
+                    height: 520,
+                    width: '100%',
+                    borderRadius: 4,
+                    p: 2,
+                    boxShadow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    background: 'linear-gradient(180deg, #cbe8ff 0%, #9fd4ff 100%)',
+                    cursor: 'pointer',
+                    '&:hover': { boxShadow: 2 },
+                  }}
+                >
+                  <Box sx={{ mt: 'auto', mb: 'auto' }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 700, fontSize: { xs: 22, md: 28 }, textDecoration: 'none', mb: 2 }}
+                    >
+                      Lihat semua program kursus
+                    </Typography>
+                    <IconButton
+                      aria-label="lihat semua program"
+                      sx={{
+                        backgroundColor: 'background.paper',
+                        color: 'primary.main',
+                        borderRadius: '50%',
+                        width: 36,
+                        height: 36,
+                        boxShadow: 1,
+                        '&:hover': { backgroundColor: 'primary.main', color: 'primary.contrastText' },
+                      }}
+                    >
+                      <IconArrowForward />
+                    </IconButton>
+                  </Box>
+
+                  <Box sx={{ lineHeight: 0, borderRadius: 3, overflow: 'hidden' }}>
+                    <Box
+                      component="img"
+                      src={'/images/home-feature.png'}
+                      alt={'Lihat semua program'}
+                      width={360}
+                      height={240}
+                      loading="lazy"
+                      style={{ display: 'block', width: '100%', height: 'auto' }}
+                    />
+                  </Box>
+                </Box>
+              </Link>
+            </Box>
           </Grid>
         </Grid>
       </Container>

@@ -2,8 +2,13 @@
   display: block !important;
 }
 
+.react-scroll-link {
+  text-decoration: none !important;
+}
+
 .react-scroll-link:hover {
   color: #1976d2 !important;
+  text-decoration: none !important;
 }
 
 .react-scroll-link:hover .headline-curve {
