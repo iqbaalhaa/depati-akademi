@@ -8,19 +8,15 @@ import Typography from '@mui/material/Typography'
 import { Link as ScrollLink } from 'react-scroll'
 import { StyledButton } from '@/components/styled-button'
 import { client } from '@/sanity/lib/client'
-import imageUrlBuilder from '@sanity/image-url'
-import type { SanityImageSource } from '@sanity/image-url'
+import { urlFor } from '@/utils/sanity'
+import type { SanityImage } from '@/interfaces/sanity'
 
-const builder: ImageUrlBuilder = imageUrlBuilder(client)
-function urlFor(source: SanityImageSource): ImageUrlBuilder {
-  return builder.image(source)
-}
 
 interface Exp {
   label: string
   value: string
   icon?: string | null
-  iconImage?: SanityImageSource | null
+  iconImage?: SanityImage | null
 }
 
 interface Headline {
@@ -35,7 +31,7 @@ interface HomeData {
   subheadline?: string | null
   ctaPrimary?: string | null
   ctaSecondary?: string | null
-  heroImage?: SanityImageSource | null
+  heroImage?: SanityImage | null
   experience?: Array<Exp> | null
 }
 
