@@ -2,6 +2,7 @@ import React, { FC, ReactNode } from 'react'
 import Box from '@mui/material/Box'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
+import WhatsAppFloatingButton from '@/components/whatsapp-floating'
 
 interface Props {
   children: ReactNode
@@ -13,6 +14,7 @@ const MainLayout: FC<Props> = ({ children }) => {
       <Header />
       {children}
       <Footer />
+      <WhatsAppFloatingButton />
     </Box>
   )
 }
