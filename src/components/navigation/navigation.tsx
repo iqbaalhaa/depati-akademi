@@ -51,7 +51,7 @@ const Navigation: FC = () => {
   const { breakpoints } = theme
   const matchMobileView = useMediaQuery(breakpoints.down('md'))
   return (
-    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: { xs: 'flex-start', md: 'center' } }}>
       {visibleNavigations.map(({ path: destination, label }) => {
         const isPageLink = destination.startsWith('/') || destination === '#'
         const commonStyle: React.CSSProperties = matchMobileView
@@ -108,7 +108,7 @@ const Navigation: FC = () => {
             key={destination}
             activeClass="current"
             to={destination}
-            spy={true}
+            spy={false}
             smooth={true}
             duration={350}
             className="react-scroll-link"

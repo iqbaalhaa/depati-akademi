@@ -7,18 +7,20 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import { Link as ScrollLink } from 'react-scroll'
 import { StyledButton } from '@/components/styled-button'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { client } from '@/sanity/lib/client'
 import imageUrlBuilder from '@sanity/image-url'
+import type { SanityImageSource } from '@sanity/image-url'
 
-const builder = imageUrlBuilder(client)
-function urlFor(source: any) {
+const builder: ImageUrlBuilder = imageUrlBuilder(client)
+function urlFor(source: SanityImageSource): ImageUrlBuilder {
   return builder.image(source)
 }
 
 interface Exp {
   label: string
   value: string
+  icon?: string | null
+  iconImage?: SanityImageSource | null
 }
 
 interface Headline {
@@ -33,25 +35,11 @@ interface HomeData {
   subheadline?: string | null
   ctaPrimary?: string | null
   ctaSecondary?: string | null
-  heroImage?: any
+  heroImage?: SanityImageSource | null
   experience?: Array<Exp> | null
 }
 
-const ExpItem: FC<{ item: Exp }> = ({ item }) => {
-  const { value, label } = item
-  return (
-    <Box sx={{ textAlign: 'center', mb: { xs: 1, md: 0 } }}>
-      <Typography
-        sx={{ color: 'secondary.main', mb: { xs: 1, md: 2 }, fontSize: { xs: 34, md: 44 }, fontWeight: 'bold' }}
-      >
-        {value}
-      </Typography>
-      <Typography color="text.secondary" variant="h5">
-        {label}
-      </Typography>
-    </Box>
-  )
-}
+// ExpItem is no longer used; cards are rendered inline in Experience section
 
 const HomeHero: FC = () => {
   const [data, setData] = useState<HomeData | null>(null)
@@ -59,7 +47,7 @@ const HomeHero: FC = () => {
 
   useEffect(() => {
     client
-      .fetch(
+      .fetch<HomeData>(
         `*[_type == "home"][0]{
           headline{
             highlightText,
@@ -71,7 +59,7 @@ const HomeHero: FC = () => {
           ctaPrimary,
           ctaSecondary,
           heroImage,
-          experience[]{label, value}
+          experience[]{label, value, icon, iconImage}
         }`
       )
       .then((res) => {
@@ -99,12 +87,17 @@ const HomeHero: FC = () => {
     data?.subheadline ??
     'Depati Akademi adalah Lembaga Pelatihan Komputer dan Kerja di Kerinci-Sungai Penuh. Kami menyediakan kursus online yang fleksibel, memungkinkan Anda mengatur waktu belajar sesuai kecepatan Anda.'
   const ctaPrimary = data?.ctaPrimary ?? 'Daftar Sekarang'
-  const ctaSecondary = data?.ctaSecondary ?? 'Lihat Program'
-  const experience = data?.experience ?? [
-    { value: '500+ Siswa', label: 'Telah Lulus dan Siap Kerja' },
-    { value: '10+ Program', label: 'Pilihan Sesuai Kebutuhan Industri' },
-    { value: '10+ Mentor', label: 'Siap Membimbing Anda dari Nol' },
-  ]
+
+  const experience = (
+    data?.experience && Array.isArray(data.experience)
+      ? data.experience
+      : [
+          { value: '700+ Siswa', label: 'Telah Lulus dan Siap Kerja' },
+          { value: '10+ Program', label: 'Pilihan Sesuai Kebutuhan Industri' },
+          { value: '10+ Mentor', label: 'Siap Membimbing Anda dari Nol' },
+          { value: 'LPK Resmi', label: 'Terdaftar dan Berizin' },
+        ]
+  ).slice(0, 4)
 
   // Build hero image url safely (if heroImage exists)
   const heroImageUrl = data?.heroImage ? urlFor(data.heroImage).width(475).height(487).url() : '/images/home-hero1.jpg'
@@ -216,14 +209,9 @@ const HomeHero: FC = () => {
                   '& button': { mr: { md: 2 }, mb: { xs: 1.5, md: 0 } },
                 }}
               >
-                <ScrollLink to="popular-course" spy={true} smooth={true} offset={0} duration={350}>
+                <ScrollLink to="popular-course" spy={false} smooth={true} offset={0} duration={350}>
                   <StyledButton color="primary" size="large" variant="contained">
                     {ctaPrimary}
-                  </StyledButton>
-                </ScrollLink>
-                <ScrollLink to="video-section" spy={true} smooth={true} offset={0} duration={350}>
-                  <StyledButton color="primary" size="large" variant="outlined" startIcon={<PlayArrowIcon />}>
-                    {ctaSecondary}
                   </StyledButton>
                 </ScrollLink>
               </Box>
@@ -291,13 +279,50 @@ const HomeHero: FC = () => {
         </Grid>
 
         {/* Experience Section */}
-        <Box sx={{ boxShadow: 2, py: 4, px: 7, borderRadius: 4, mt: 6 }}>
+        <Box sx={{ backgroundColor: 'background.paper', py: { xs: 3, md: 4 }, mt: 3 }}>
           <Grid container spacing={2}>
-            {experience.map((item) => (
-              <Grid key={item.value} item xs={12} md={4}>
-                <ExpItem item={item} />
-              </Grid>
-            ))}
+            {experience.map((item, idx) => {
+              const icons = ['🎓', '📚', '👨‍🏫', '🛡️']
+              const emoji = item.icon || icons[idx % icons.length]
+              return (
+                <Grid key={item.value + idx} item xs={6} md={3}>
+                  <Box
+                    sx={{
+                      backgroundColor: 'background.paper',
+                      borderRadius: '18px',
+                      p: 2.5,
+                      boxShadow: 3,
+                      border: '1px solid',
+                      borderColor: 'divider',
+                      textAlign: 'center',
+                      minHeight: { xs: 140, md: 160 },
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    {item.iconImage ? (
+                      <Image
+                        src={urlFor(item.iconImage).width(36).height(36).url()}
+                        alt={item.value}
+                        width={36}
+                        height={36}
+                        style={{ display: 'block' }}
+                      />
+                    ) : (
+                      <Typography sx={{ fontSize: { xs: 20, md: 24 }, mb: 1 }}>{emoji}</Typography>
+                    )}
+                    <Typography sx={{ color: 'success.main', mb: 0.5, fontSize: { xs: 18, md: 22 }, fontWeight: 700 }}>
+                      {item.value}
+                    </Typography>
+                    <Typography color="text.secondary" variant="body2">
+                      {item.label}
+                    </Typography>
+                  </Box>
+                </Grid>
+              )
+            })}
           </Grid>
         </Box>
       </Container>

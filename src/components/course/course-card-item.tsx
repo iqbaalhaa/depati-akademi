@@ -61,6 +61,26 @@ const CourseCardItem: FC<Props> = ({ item }) => {
               position: 'absolute',
               top: 8,
               left: 8,
+              backgroundColor: 'success.main',
+              color: 'success.contrastText',
+              px: 1.2,
+              py: 0.5,
+              borderRadius: 1,
+              fontSize: 12,
+              fontWeight: 700,
+              boxShadow: 1,
+              zIndex: 3,
+            }}
+          >
+            Diskon {item.discountPercent}%
+          </Box>
+        )}
+        {item.badge && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
               backgroundColor: 'warning.main',
               color: 'warning.contrastText',
               px: 1.2,
@@ -69,9 +89,10 @@ const CourseCardItem: FC<Props> = ({ item }) => {
               fontSize: 12,
               fontWeight: 700,
               boxShadow: 1,
+              zIndex: 3,
             }}
           >
-            Diskon {item.discountPercent}%
+            {item.badge}
           </Box>
         )}
         <Box
@@ -80,6 +101,7 @@ const CourseCardItem: FC<Props> = ({ item }) => {
             overflow: 'hidden',
             borderRadius: 3,
             mb: 2,
+            position: 'relative',
           }}
         >
           <Box
@@ -89,8 +111,9 @@ const CourseCardItem: FC<Props> = ({ item }) => {
             width={360}
             height={240}
             loading="lazy"
-            sx={{ display: 'block', width: '100%', height: 240, objectFit: 'cover' }}
+            sx={{ display: 'block', width: '100%', height: 240, objectFit: 'cover', position: 'relative', zIndex: 1 }}
           />
+          
         </Box>
         <Box sx={{ mb: 2 }}>
           <Typography component="h2" variant="h5" sx={{ mb: 2, height: 56, overflow: 'hidden', fontSize: '1.2rem' }}>
@@ -190,18 +213,16 @@ const CourseCardItem: FC<Props> = ({ item }) => {
             },
           }}
         >
-          <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-            <CheckCircleOutline sx={{ color: 'success.main', fontSize: 18, mr: 1, mt: '2px' }} />
-            <Typography variant="body2">Belajar intensif di kelas dengan tryout persiapan</Typography>
-          </Box>
-          <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start', mb: 1 }}>
-            <CheckCircleOutline sx={{ color: 'success.main', fontSize: 18, mr: 1, mt: '2px' }} />
-            <Typography variant="body2">Sesi pertemuan online hingga 10x seminggu</Typography>
-          </Box>
-          <Box component="li" sx={{ display: 'flex', alignItems: 'flex-start' }}>
-            <CheckCircleOutline sx={{ color: 'success.main', fontSize: 18, mr: 1, mt: '2px' }} />
-            <Typography variant="body2">Akses materi dan latihan dengan kelas yang seru</Typography>
-          </Box>
+          {(item.bullets || [
+            'Belajar intensif di kelas dengan tryout persiapan',
+            'Sesi pertemuan online hingga 10x seminggu',
+            'Akses materi dan latihan dengan kelas yang seru',
+          ]).map((text, idx) => (
+            <Box key={String(idx)} component="li" sx={{ display: 'flex', alignItems: 'flex-start', mb: idx !== (item.bullets?.length || 3) - 1 ? 1 : 0 }}>
+              <CheckCircleOutline sx={{ color: 'success.main', fontSize: 18, mr: 1, mt: '2px' }} />
+              <Typography variant="body2">{text}</Typography>
+            </Box>
+          ))}
         </Box>
 
         {/* Detail link at the very bottom */}

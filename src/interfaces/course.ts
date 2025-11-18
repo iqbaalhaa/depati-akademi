@@ -3,6 +3,8 @@ export interface Course {
   slug?: string
   title: string
   cover: string
+  badge?: string
+  bullets?: string[]
   rating: number
   ratingCount: number
   price: number

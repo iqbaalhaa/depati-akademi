@@ -9,7 +9,7 @@ import { IconButton, useMediaQuery } from '@mui/material'
 import IconArrowBack from '@mui/icons-material/ArrowBack'
 import IconArrowForward from '@mui/icons-material/ArrowForward'
 
-import Button from '@mui/material/Button'
+// import Button from '@mui/material/Button'
 import Link from 'next/link'
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from '@/sanity/lib/client'
@@ -81,6 +81,8 @@ const HomePopularCourse: FC = () => {
           _id,
           title,
           slug,
+          badge,
+          bullets,
           price,
           normalPrice,
           discountPrice,
@@ -92,15 +94,9 @@ const HomePopularCourse: FC = () => {
       )
       .then((items) => {
         const mapped: Course[] = items.map((p) => {
-          const normal = typeof p.normalPrice === 'number'
-            ? p.normalPrice
-            : (typeof p.price === 'number' ? p.price : 0)
-          const discount = typeof p.discountPrice === 'number'
-            ? p.discountPrice
-            : normal
-          const percent = normal > 0 && discount < normal
-            ? Math.round(((normal - discount) / normal) * 100)
-            : 0
+          const normal = typeof p.normalPrice === 'number' ? p.normalPrice : typeof p.price === 'number' ? p.price : 0
+          const discount = typeof p.discountPrice === 'number' ? p.discountPrice : normal
+          const percent = normal > 0 && discount < normal ? Math.round(((normal - discount) / normal) * 100) : 0
           return {
             id: p._id,
             slug: p.slug?.current,
@@ -108,6 +104,14 @@ const HomePopularCourse: FC = () => {
             cover: p.image
               ? builder.image(p.image).width(360).height(240).url()
               : '/images/courses/christopher-gower-m_HRfLhgABo-unsplash.jpg',
+            badge: p.badge,
+            bullets: Array.isArray(p.bullets) && p.bullets.length > 0
+              ? p.bullets
+              : [
+                  'Belajar intensif di kelas dengan tryout persiapan',
+                  'Sesi pertemuan online hingga 10x seminggu',
+                  'Akses materi dan latihan dengan kelas yang seru',
+                ],
             rating: typeof p.rating === 'number' ? p.rating : 5,
             ratingCount: typeof p.ratingCount === 'number' ? p.ratingCount : 0,
             price: discount,
@@ -124,6 +128,7 @@ const HomePopularCourse: FC = () => {
       })
       .finally(() => setLoading(false))
   }, [builder])
+
 
   const slidesToShow = Math.min(matchMobileView ? 1 : 3, Math.max(courses.length, 1))
   const sliderConfig: Settings = {
@@ -149,7 +154,7 @@ const HomePopularCourse: FC = () => {
           xs: 6,
           md: 8,
         },
-        pb: 14,
+        pb: { xs: 6, md: 8 },
         backgroundColor: 'background.default',
       }}
     >
@@ -247,6 +252,7 @@ const HomePopularCourse: FC = () => {
           </Grid>
         </Grid>
       </Container>
+
     </Box>
   )
 }

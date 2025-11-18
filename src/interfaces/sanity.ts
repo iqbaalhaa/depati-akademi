@@ -70,6 +70,8 @@ export interface SanityProgram extends SanityDocument {
   description?: string
   slug?: { current: string }
   image?: SanityImage
+  badge?: string
+  bullets?: string[]
   price?: number
   normalPrice?: number
   discountPrice?: number

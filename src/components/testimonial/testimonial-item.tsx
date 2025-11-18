@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Image from 'next/image'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import Rating from '@mui/material/Rating'
 import { Testimonial } from '@/interfaces/testimonial'
 
 interface Props {
@@ -15,6 +16,17 @@ const TestimonialItem: FC<Props> = ({ item }) => {
         <Typography component="h2" variant="h4" sx={{ mb: 2 }}>
           {item.title}
         </Typography>
+        {typeof item.rating === 'number' && (
+          <Rating
+            value={Math.max(1, Math.min(5, item.rating))}
+            readOnly
+            sx={{
+              mb: 1,
+              '& .MuiRating-iconFilled': { color: 'secondary.main' },
+              '& .MuiRating-iconEmpty': { color: 'divider' },
+            }}
+          />
+        )}
         <Typography sx={{ mb: 2, color: 'text.secondary' }}>{item.content}</Typography>
       </Box>
       <Box

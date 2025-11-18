@@ -46,6 +46,16 @@ const StyledButtonRoot = styled('button', {
     ...(!disableHoverEffect && {
       transform: 'translateY(-3px)',
     }),
+    ...(color === 'primary' && variant === 'outlined' && {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+      borderColor: theme.palette.primary.main,
+    }),
+    ...(color === 'secondary' && variant === 'outlined' && {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.primary.contrastText,
+      borderColor: theme.palette.secondary.main,
+    }),
   },
 
   '& svg': {

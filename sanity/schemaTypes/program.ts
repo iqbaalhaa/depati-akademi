@@ -9,6 +9,14 @@ export default defineType({
     defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } }),
     defineField({ name: 'description', title: 'Description', type: 'text' }),
     defineField({ name: 'duration', title: 'Duration', type: 'string' }),
+    defineField({
+      name: 'bullets',
+      title: 'Benefit Bullets',
+      type: 'array',
+      of: [{ type: 'string' }],
+      description: 'Daftar poin manfaat program yang akan ditampilkan di kartu',
+    }),
+    defineField({ name: 'badge', title: 'Badge', type: 'string', description: 'Label kecil di gambar, mis: Paling Populer' }),
     // Legacy single price (optional). You can keep using it if needed.
     defineField({ name: 'price', title: 'Price (legacy)', type: 'number' }),
     // New pricing fields

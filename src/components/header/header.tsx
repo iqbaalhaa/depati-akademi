@@ -8,6 +8,9 @@ import { Navigation } from '@/components/navigation'
 import { useTheme } from '@mui/material/styles'
 import { Menu, Close } from '@mui/icons-material'
 import ThemeToggle from '@/components/theme-toggle'
+import { StyledButton } from '@/components/styled-button'
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import NextLink from 'next/link'
 
 const Header: FC = () => {
   const [visibleMenu, setVisibleMenu] = useState<boolean>(false)
@@ -17,7 +20,7 @@ const Header: FC = () => {
   return (
     <Box sx={{ backgroundColor: 'background.paper' }}>
       <Container sx={{ py: { xs: 2, md: 3 } }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: { md: 2 } }}>
           <Logo />
           <Box sx={{ ml: 'auto', display: { xs: 'inline-flex', md: 'none' } }}>
             <IconButton onClick={() => setVisibleMenu(!visibleMenu)}>
@@ -58,10 +61,15 @@ const Header: FC = () => {
               }),
             }}
           >
-            <Box sx={{ order: { xs: -1, md: 0 }, alignSelf: { xs: 'flex-start', md: 'auto' }, mb: { xs: 1, md: 0 } }}>
+            <Navigation />
+            <Box sx={{ order: { xs: -1, md: 0 }, alignSelf: { xs: 'flex-start', md: 'auto' }, mb: { xs: 1, md: 0 }, ml: { md: 'auto' }, display: 'inline-flex', alignItems: 'center', gap: { xs: 1, md: 1.5 } }}>
+              <NextLink href="/#video-section" passHref>
+                <StyledButton color="primary" size="medium" variant="outlined" startIcon={<WhatsAppIcon />}>
+                  Daftar / Konsultasi
+                </StyledButton>
+              </NextLink>
               {React.createElement(ThemeToggle)}
             </Box>
-            <Navigation />
             {visibleMenu && matchMobileView && (
               <IconButton
                 sx={{

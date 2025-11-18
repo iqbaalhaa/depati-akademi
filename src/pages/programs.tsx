@@ -25,6 +25,8 @@ const ProgramsPage: NextPageWithLayout = () => {
           _id,
           title,
           slug,
+          badge,
+          bullets,
           price,
           normalPrice,
           discountPrice,
@@ -50,6 +52,14 @@ const ProgramsPage: NextPageWithLayout = () => {
             slug: p.slug?.current,
             title: p.title,
             cover: p.image ? builder.image(p.image).width(360).height(240).url() : '/images/courses/christopher-gower-m_HRfLhgABo-unsplash.jpg',
+            badge: p.badge,
+            bullets: Array.isArray(p.bullets) && p.bullets.length > 0
+              ? p.bullets
+              : [
+                  'Belajar intensif di kelas dengan tryout persiapan',
+                  'Sesi pertemuan online hingga 10x seminggu',
+                  'Akses materi dan latihan dengan kelas yang seru',
+                ],
             rating: typeof p.rating === 'number' ? p.rating : 5,
             ratingCount: typeof p.ratingCount === 'number' ? p.ratingCount : 0,
             price: discount,
@@ -79,7 +89,7 @@ const ProgramsPage: NextPageWithLayout = () => {
       {!loading && (
         <Grid container spacing={2}>
           {courses.map((item) => (
-            <Grid key={String(item.id)} item xs={12} md={4}>
+            <Grid key={String(item.id)} item xs={12} sm={6} md={3}>
               <CourseCardItem item={item} />
             </Grid>
           ))}

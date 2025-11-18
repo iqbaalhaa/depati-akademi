@@ -140,7 +140,7 @@ const HomeOurMentors: FC = () => {
           xs: 6,
           md: 12,
         },
-        backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.background.default : '#ecf3f3',
+        backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.background.default : theme.palette.background.default,
       }}
     >
       <Container maxWidth="lg">

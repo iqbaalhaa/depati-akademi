@@ -49,7 +49,7 @@ const HomeGallery: FC = () => {
   }, [builder])
 
   return (
-    <Box id="gallery" sx={{ pt: { xs: 3, md: 6 }, pb: { xs: 4, md: 8 }, backgroundColor: 'background.paper' }}>
+    <Box id="gallery" sx={{ pt: { xs: 2, md: 4 }, pb: { xs: 4, md: 6 }, backgroundColor: 'background.paper' }}>
       <Container maxWidth="lg">
         <Box sx={{ mb: 3, textAlign: 'center' }}>
           <Typography component="h2" variant="h1" sx={{ fontWeight: 700, fontSize: { xs: 36, md: 46 }, lineHeight: 1 }}>

@@ -71,6 +71,7 @@ const HomeTestimonial: FC = () => {
           id: t._id,
           title: t.name || 'Testimonial',
           content: t.content,
+          rating: typeof t.rating === 'number' ? t.rating : 5,
           user: {
             id: t._id,
             name: t.name,

@@ -62,6 +62,8 @@ export default defineType({
           fields: [
             {name: 'value', title: 'Nilai (contoh: 500+ Siswa)', type: 'string'},
             {name: 'label', title: 'Deskripsi', type: 'string'},
+            {name: 'icon', title: 'Icon (emoji sederhana)', type: 'string', description: 'Contoh: 🎓, 📚, 👨\u200d🏫'},
+            {name: 'iconImage', title: 'Icon Image (opsional)', type: 'image', options: { hotspot: true }, description: 'Jika diisi, akan dipakai sebagai icon menggantikan emoji.'},
           ],
         },
       ],
